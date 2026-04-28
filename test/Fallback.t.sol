@@ -23,8 +23,14 @@ function testWhoisOwner () public { // this fuction is to checks the owner statu
   console.log (mahin) ;
 }
 
-function testCheckTheContribution () public {
-  
+function testContribution () public {
+  uint256 SendAmount = 0.0001 ether ;
+  address user = makeAddr("user");
+  hoax(user,1 ether);
+
+  myfallback.contribute {value : SendAmount} () ;
+  uint256 actualcontri = myfallback.contributions (user) ;
+  assertEq (actualcontri,SendAmount) ;
 }
 
 

